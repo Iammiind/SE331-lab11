@@ -42,4 +42,15 @@ public class StudentDaoDBImpl implements StudentDao {
     public Integer size() {
         return (int)studentRepository.count();
     }
+
+    @Override
+    public Student findByUsername(String username) {
+        return studentRepository.findByUserUsername(username);
+    }
+
+    @Override
+    public List<Student> getStudents(String searchText) {
+        return studentRepository.findByName(searchText);
+    }
+
 }

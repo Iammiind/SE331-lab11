@@ -11,15 +11,31 @@ import {Router} from "@angular/router";
 })
 export class StudentsComponent {
   students: Student[];
+  search: string;
 
   constructor(private studentDataService: StudentsDataService, private router: Router ) {
   }
 
   ngOnInit() {
     this.studentDataService.getStudentsData()
-      .subscribe(students => this.students = students);
+      .subscribe(students => this.students = students,
+      (error : Error) => {
+        if (error.message === 'UnAuthorize') {
+          this.router.navigate(['login'], {queryParams: {source: 'student'}});
+        }
+      });
   }
 
+  onSearch() {
+    this.studentDataService.findStudent(this.search)
+      .subscribe(students => this.students = students,
+        (error : Error) => {
+          if(error.message === 'UnAuthorize') {
+            this.router.navigate(['login'], {queryParams:{source: 'student'}});
+          }
+        }
+      )
+  }
 
   averageGpa() {
     let sum = 0;
@@ -46,4 +62,5 @@ export class StudentsComponent {
   showDetail(student: Student){
     this.router.navigate(['/detail',student.id]);
   }
+
 }

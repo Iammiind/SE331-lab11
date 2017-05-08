@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Student} from '../student';
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {StudentsDataService} from "../../service/students-data.service";
 import 'rxjs/add/operator/switchMap';
 @Component({
@@ -9,7 +9,7 @@ import 'rxjs/add/operator/switchMap';
   styleUrls: ['./students.view.component.css']
 })
 export class StudentsViewComponent {
-  constructor(private route: ActivatedRoute, private studentDataService: StudentsDataService) {
+  constructor(private router: Router, private route: ActivatedRoute, private studentDataService: StudentsDataService) {
   }
 
   student: Student;
@@ -26,6 +26,12 @@ export class StudentsViewComponent {
             this.student = student;
           else
             this.isNoData = true;
+        }
+        ,
+        (error : Error) => {
+          if(error.message === 'UnAuthorize') {
+            this.router.navigate(['login'], {queryParams: {source: 'view'}});
+          }
         }
       );
   }

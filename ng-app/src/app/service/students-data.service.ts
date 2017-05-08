@@ -5,12 +5,11 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class StudentsDataService {
   constructor(private http: Http){}
+
   getStudentsData(){
     let studentArray:Student[];
     return this.http.get('app/data/people.json')
       .map(res => res.json().students);
-
-
   }
 
   getStudent(id:number){
@@ -20,4 +19,9 @@ export class StudentsDataService {
   addStudent(student:Student,imageFile:any){
     return null;
   }
+
+  findStudent(search: string) {
+    return null;
+  }
+
 }

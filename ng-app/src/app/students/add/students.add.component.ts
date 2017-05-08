@@ -16,6 +16,13 @@ export class StudentsAddComponent {
 
   ngOnInit() {
     this.student = new Student();
+    this.studentDataService.getStudentsData()
+      .subscribe((a) => {},
+        (error : Error) => {
+          if(error.message === 'UnAuthorize') {
+            this.router.navigate(['login'], {queryParams: {source: 'add student'}});
+          }
+        });
   }
 
   upQuantity(student: Student) {
@@ -26,6 +33,7 @@ export class StudentsAddComponent {
     if (student.penAmount > 0)
       student.penAmount--;
   }
+
   @ViewChild('fileInput') inputEl: ElementRef;
   addStudent(student: Student) {
     let result: Student;
